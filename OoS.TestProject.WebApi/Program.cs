@@ -1,4 +1,14 @@
+using System;
+using Microsoft.EntityFrameworkCore;
+using OoS.TestProject.DAL.Persistence;
+
 var builder = WebApplication.CreateBuilder(args);
+
+var mariaConnectionString = builder.Configuration.GetConnectionString("MariaDbConnection");
+
+builder.Services.AddDbContext<OoSTestProjectDbContext>(options =>
+    options.UseMySql(mariaConnectionString, ServerVersion.AutoDetect(mariaConnectionString)));
+
 
 // Add services to the container.
 

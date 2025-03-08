@@ -3,6 +3,9 @@ using Microsoft.OpenApi.Models;
 using OoS.TestProject.DAL.Persistence;
 using OoS.TestProject.DAL.Repositories.Interfaces;
 using OoS.TestProject.DAL.Repositories.Realizations;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using OoS.TestProject.BLL.Validation.Validators.DtoValidators.Student;
 
 namespace OoS.TestProject.WebApi.Extensions
 {
@@ -19,8 +22,11 @@ namespace OoS.TestProject.WebApi.Extensions
             services.AddRepositoryServices();
             var currentAssemblies = AppDomain.CurrentDomain.GetAssemblies();
             services.AddAutoMapper(currentAssemblies);
-        }
 
+            services.AddFluentValidationAutoValidation();
+            services.AddValidatorsFromAssemblyContaining<CreateStudentDtoValidator>();
+        }
+         
         public static void AddApplicationServices(this IServiceCollection services, ConfigurationManager configuration)
         {
             var mariaConnectionString = configuration.GetConnectionString("MariaDbConnection");

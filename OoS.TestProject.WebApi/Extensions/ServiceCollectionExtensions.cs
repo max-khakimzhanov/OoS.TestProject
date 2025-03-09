@@ -22,7 +22,7 @@ namespace OoS.TestProject.WebApi.Extensions
             services.AddRepositoryServices();
             var currentAssemblies = AppDomain.CurrentDomain.GetAssemblies();
             services.AddAutoMapper(currentAssemblies);
-
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(currentAssemblies));
             services.AddFluentValidationAutoValidation();
             services.AddValidatorsFromAssemblyContaining<CreateStudentDtoValidator>();
         }

@@ -8,7 +8,7 @@ namespace OoS.TestProject.BLL.Mapping.Student
     {
         public StudentProfile()
         {
-            CreateMap<StudentEntity, StudentDto>();
+            CreateMap<StudentEntity, StudentDto>().ReverseMap();
             CreateMap<CreateStudentDto, StudentEntity>();
             CreateMap<UpdateStudentDto, StudentEntity>();
         }

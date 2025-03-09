@@ -8,7 +8,7 @@ namespace OoS.TestProject.BLL.Mapping.Teacher
     {
         public TeacherProfile()
         {
-            CreateMap<TeacherEntity, TeacherDto>();
+            CreateMap<TeacherEntity, TeacherDto>().ReverseMap();
             CreateMap<CreateTeacherDto, TeacherEntity>();
             CreateMap<UpdateTeacherDto, TeacherEntity>();
         }

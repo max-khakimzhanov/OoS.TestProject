@@ -8,7 +8,7 @@ namespace OoS.TestProject.BLL.Mapping.Course
     {
         public CourseProfile()
         {
-            CreateMap<CourseEntity, CourseDto>();
+            CreateMap<CourseEntity, CourseDto>().ReverseMap();
             CreateMap<CreateCourseDto, CourseEntity>();
             CreateMap<UpdateCourseDto, CourseEntity>();
         }

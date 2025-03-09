@@ -10,10 +10,14 @@ namespace OoS.TestProject.DAL.Repositories.Interfaces
 {
     public interface IRepositoryBase<T> where T : class
     {
-        Task CreateAsync(T entity);
+        Task<T> CreateAsync(T entity);
         void Update(T entity);
         void Delete(T entity);
-        Task<T?> GetByIdAsync(int id);
-        Task<IEnumerable<T?>> GetAllAsync();
+        Task<T?> GetFirstOrDefaultAsync(
+            Expression<Func<T, bool>>? predicate = default,
+            Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = default);
+        Task<IEnumerable<T>> GetAllAsync(
+            Expression<Func<T, bool>>? predicate = default,
+            Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = default);
     }
 }

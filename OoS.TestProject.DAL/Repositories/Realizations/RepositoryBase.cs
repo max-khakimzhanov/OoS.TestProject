@@ -21,10 +21,10 @@ namespace OoS.TestProject.DAL.Repositories.Realizations
             _dbContext = dbContext;
             _dbSet = dbContext.Set<T>();
         }
-
-        public async Task CreateAsync(T entity)
+        public async Task<T> CreateAsync(T entity)
         {
-            await _dbSet.AddAsync(entity);
+            var createdEntity = (await _dbSet.AddAsync(entity)).Entity;
+            return createdEntity;
         }
 
         public void Update(T entity)
@@ -37,14 +37,38 @@ namespace OoS.TestProject.DAL.Repositories.Realizations
             _dbSet.Remove(entity);
         }
 
-        public async Task<T?> GetByIdAsync(int id)
+        public async Task<T?> GetFirstOrDefaultAsync(
+            Expression<Func<T, bool>>? predicate = default,
+            Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = default)
         {
-            return await _dbSet.FindAsync(id);
+            return await GetQueryable(predicate, include).FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<T?>> GetAllAsync()
+
+        public async Task<IEnumerable<T>> GetAllAsync(
+            Expression<Func<T, bool>>? predicate = default,
+            Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = default)
         {
-            return await _dbSet.ToListAsync();
+            return await GetQueryable(predicate, include).ToListAsync();
+        }
+
+        private IQueryable<T> GetQueryable(
+            Expression<Func<T, bool>>? predicate = default,
+            Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = default)
+        {
+            IQueryable<T> query = _dbContext.Set<T>().AsNoTracking();
+
+            if (include is not null)
+            {
+                query = include(query);
+            }
+
+            if (predicate is not null)
+            {
+                query = query.Where(predicate);
+            }
+
+            return query;
         }
     }
 }

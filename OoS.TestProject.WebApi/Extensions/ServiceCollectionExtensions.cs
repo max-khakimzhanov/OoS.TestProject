@@ -15,6 +15,9 @@ namespace OoS.TestProject.WebApi.Extensions
         {
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
             services.AddScoped(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
+            services.AddScoped<ICourseRepository, CourseRepository>();
+            services.AddScoped<IStudentRepository, StudentRepository>();
+            services.AddScoped<ITeacherRepository, TeacherRepository>();
         }
 
         public static void AddCustomServices(this IServiceCollection services)
@@ -35,6 +38,11 @@ namespace OoS.TestProject.WebApi.Extensions
                 options.UseMySql(mariaConnectionString, ServerVersion.AutoDetect(mariaConnectionString)));
 
             services.AddCustomServices();
+            services.AddLogging(options =>
+            {
+                options.AddConsole();
+                options.AddDebug(); 
+            });
             services.AddControllers();
         }
 

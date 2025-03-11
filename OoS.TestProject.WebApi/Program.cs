@@ -2,9 +2,13 @@ using OoS.TestProject.WebApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddApplicationServices(builder.Configuration);
+// Setting up services
+builder.Services.AddDatabaseServices(builder.Configuration);
+builder.Services.AddAuthenticationServices(builder.Configuration);
+builder.Services.AddLoggingServices();
 builder.Services.AddSwaggerServices();
 builder.Services.AddCustomServices();
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
@@ -16,9 +20,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

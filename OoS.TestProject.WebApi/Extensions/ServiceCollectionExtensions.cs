@@ -1,11 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
-using OoS.TestProject.DAL.Persistence;
-using OoS.TestProject.DAL.Repositories.Interfaces;
+﻿using OoS.TestProject.DAL.Repositories.Interfaces;
 using OoS.TestProject.DAL.Repositories.Realizations;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using OoS.TestProject.BLL.Validation.Validators.DtoValidators.Student;
+using OoS.TestProject.BLL.Services.Interfaces;
+using OoS.TestProject.BLL.Services.Realizations;
 
 namespace OoS.TestProject.WebApi.Extensions
 {
@@ -28,31 +27,11 @@ namespace OoS.TestProject.WebApi.Extensions
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(currentAssemblies));
             services.AddFluentValidationAutoValidation();
             services.AddValidatorsFromAssemblyContaining<CreateStudentDtoValidator>();
-        }
-         
-        public static void AddApplicationServices(this IServiceCollection services, ConfigurationManager configuration)
-        {
-            var mariaConnectionString = configuration.GetConnectionString("MariaDbConnection");
 
-            services.AddDbContext<OoSTestProjectDbContext>(options =>
-                options.UseMySql(mariaConnectionString, ServerVersion.AutoDetect(mariaConnectionString)));
-
-            services.AddCustomServices();
-            services.AddLogging(options =>
-            {
-                options.AddConsole();
-                options.AddDebug(); 
-            });
-            services.AddControllers();
-        }
-
-        public static void AddSwaggerServices(this IServiceCollection services)
-        {
-            services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "OoS.TestProject.WebApi", Version = "v1" });
-            });
+            services.AddScoped<IClaimsService, ClaimsService>();
+            services.AddScoped<IJwtService, JwtService>();
+            services.AddScoped<IRegisterService, RegisterService>();
+            services.AddScoped<ILoginService, LoginService>();
         }
     }
 }

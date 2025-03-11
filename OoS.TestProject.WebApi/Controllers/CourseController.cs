@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OoS.TestProject.BLL.Dto.Course;
 using OoS.TestProject.BLL.MediatR.CourseEntity.Create;
 using OoS.TestProject.BLL.MediatR.CourseEntity.Delete;
@@ -10,12 +11,14 @@ namespace OoS.TestProject.WebApi.Controllers
 {
     public class CourseController : BaseApiController
     {
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             return HandleResult(await Mediator.Send(new GetAllCourseQuery()));
         }
 
+        [Authorize]
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {

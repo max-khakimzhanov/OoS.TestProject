@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OoS.TestProject.BLL\OoS.TestProject.BLL.csproj" />
+    <ProjectReference Include="..\OoS.TestProject.WebApi\OoS.TestProject.WebApi.csproj" />
   </ItemGroup>
 
   <ItemGroup>

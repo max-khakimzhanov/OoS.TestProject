@@ -1,14 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using OoS.TestProject.DAL.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace OoS.TestProject.DAL.Persistence
 {
-    public class OoSTestProjectDbContext : DbContext
+    public class OoSTestProjectDbContext : IdentityDbContext<User>
     {
         public OoSTestProjectDbContext(DbContextOptions<OoSTestProjectDbContext> options) 
             : base(options) { }
@@ -19,6 +14,8 @@ namespace OoS.TestProject.DAL.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Course>()
                 .HasOne(c => c.Teacher)
                 .WithMany(t => t.Courses)
